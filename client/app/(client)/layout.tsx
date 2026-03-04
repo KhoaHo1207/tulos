@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Raleway } from "next/font/google";
-import "./globals.css";
+import "@/app/globals.css";
 
 const raleway = Raleway({
   variable: "--font-raleway",
