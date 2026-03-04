@@ -1,10 +1,9 @@
 import { TrolleyIcon } from "@sanity/icons";
-import { title } from "process";
-import { defineField, defineType, ValueError } from "sanity";
+import { defineField, defineType } from "sanity";
 
 export const productType = defineType({
   name: "product",
-  title: "Product",
+  title: "Products",
   type: "document",
   icon: TrolleyIcon,
   fields: [
@@ -28,14 +27,7 @@ export const productType = defineType({
       name: "images",
       title: "Product Images",
       type: "array",
-      of: [
-        {
-          type: "image",
-          options: {
-            hotpost: true,
-          },
-        },
-      ],
+      of: [{ type: "image", options: { hotspot: true } }],
     }),
     defineField({
       name: "intro",
@@ -44,35 +36,42 @@ export const productType = defineType({
     }),
     defineField({
       name: "description",
-      title: "Product Description",
+      title: "Description",
       type: "string",
     }),
     defineField({
       name: "price",
-      title: "Product Price",
+      title: "Price",
       type: "number",
       validation: (Rule) => Rule.required().min(0),
     }),
     defineField({
-      name: "category",
-      title: "Product Category",
+      name: "discount",
+      title: "Discount",
+      type: "number",
+      validation: (Rule) => Rule.required().min(0),
+    }),
+    defineField({
+      name: "categories",
+      title: "Categories",
       type: "array",
-      of: [{ type: "reference", to: [{ type: "category" }] }],
+      of: [{ type: "reference", to: { type: "category" } }],
     }),
     defineField({
       name: "stock",
       title: "Stock",
       type: "number",
-      validation: (Rule) => Rule.required().min(0),
+      validation: (Rule) => Rule.min(0),
     }),
+
     defineField({
       name: "status",
       title: "Product Status",
       type: "string",
       options: {
         list: [
-          { title: "Hot", value: "hot" },
           { title: "New", value: "new" },
+          { title: "Hot", value: "hot" },
           { title: "Sale", value: "sale" },
         ],
       },
@@ -83,30 +82,12 @@ export const productType = defineType({
       type: "string",
       options: {
         list: [
-          {
-            title: "Tshirt",
-            value: "tshirt",
-          },
-          {
-            title: "Jacket",
-            value: "jacket",
-          },
-          {
-            title: "Pants",
-            value: "pants",
-          },
-          {
-            title: "Hoodie",
-            value: "hoodie",
-          },
-          {
-            title: "Short",
-            value: "short",
-          },
-          {
-            title: "Others",
-            value: "others",
-          },
+          { title: "Tshirt", value: "tshirt" },
+          { title: "Jacket", value: "jacket" },
+          { title: "Pants", value: "pants" },
+          { title: "Hoodie", value: "hoodie" },
+          { title: "Short", value: "short" },
+          { title: "Others", value: "others" },
         ],
       },
     }),
@@ -118,7 +99,7 @@ export const productType = defineType({
       subtitle: "price",
     },
     prepare(selection) {
-      const { title, media, subtitle } = selection;
+      const { title, subtitle, media } = selection;
       const image = media && media[0];
       return {
         title: title,
