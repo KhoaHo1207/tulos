@@ -9,7 +9,7 @@ export default function HeaderMenu() {
   console.log(pathname);
 
   return (
-    <div className="hidden w-1/3 items-center gap-5 text-sm font-semibold capitalize md:inline-flex">
+    <div className="hidden w-1/3 items-center gap-5 font-semibold capitalize md:inline-flex">
       {headerData.map((item) => (
         <Link
           href={item.href}
