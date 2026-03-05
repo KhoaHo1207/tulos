@@ -5,18 +5,35 @@ import {
   createCategorySchema,
   updateCategorySchema,
 } from "../schema/category.schema.js";
+import { createSlug } from "../utils/create-slug.js";
 
 export const createCategory = async (req, res) => {
   try {
-    const { error } = createCategorySchema.safeParse(req.body);
+    const { data, error } = createCategorySchema.safeParse(req.body);
+
     if (error) {
       return res.status(apiStatus.BAD_REQUEST).json({
         success: false,
         message: error.message,
       });
     }
-    const { title, slug, description, image } = req.body;
-    const category = await Category.create({ title, slug, description, image });
+
+    const { title, description, image } = data;
+
+    // 1. tạo category trước (Mongo tạo _id)
+    const category = await Category.create({
+      title,
+      description,
+      image,
+    });
+
+    // 2. tạo slug từ title + id
+    const slug = createSlug(`${title}-${category._id}`);
+
+    // 3. update slug
+    category.slug = slug;
+    await category.save();
+
     return res.status(apiStatus.CREATED).json({
       success: true,
       message: "Category created successfully",
@@ -24,6 +41,7 @@ export const createCategory = async (req, res) => {
     });
   } catch (error) {
     console.log("Error in createCategory controller", error);
+
     return res.status(apiStatus.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: errorMessage.INTERNAL_SERVER_ERROR,
