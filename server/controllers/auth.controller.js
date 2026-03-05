@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import User from "../models/user.model.js";
-import { apiStatus } from "../constants/APIStatus.js";
+import { apiStatus } from "../constants/apiStatus.js";
 import { errorMessage } from "../constants/errorMessage.js";
 import bcrypt from "bcryptjs";
 import generateAvatarUrl from "../utils/avatar.util.js";
