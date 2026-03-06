@@ -1,48 +1,61 @@
-import { ClerkLoaded, SignedIn, SignInButton, UserButton } from "@clerk/nextjs";
-import { currentUser } from "@clerk/nextjs/server";
-import { ListOrdered } from "lucide-react";
 import Link from "next/link";
-import CartIcon from "./CartIcon";
+import React from "react";
+import { ClerkLoaded, SignedIn, UserButton } from "@clerk/nextjs";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import Container from "./Container";
-import HeaderMenu from "./HeaderMenu";
-import Logo from "./Logo";
-import MobileMenu from "./MobileMenu";
-import SearchBar from "./SearchBar";
+import { getAllCategories, getMyOrders } from "@/sanity/helpers/queries";
+import HeaderMenu from "@/components/HeaderMenu";
+import Logo from "@/components/Logo";
+import { ListOrdered } from "lucide-react";
+import CartIcon from "@/components/CartIcon";
+import MobileMenu from "@/components/MobileMenu";
+import SearchBar from "@/components/SearchBar";
 
-export default async function Header() {
+const Header = async () => {
   const user = await currentUser();
+  const { userId } = await auth();
+  let orders = null;
+  if (userId) {
+    orders = await getMyOrders(userId);
+  }
+  const categories = await getAllCategories(3);
 
   return (
-    <header className="border-b border-b-gray-400 py-5">
+    <header className="sticky top-0 z-50 border-b border-b-gray-200 bg-white py-5">
       <Container className="text-lightColor flex items-center justify-between gap-7">
-        <HeaderMenu />
-        <MobileMenu />
+        <HeaderMenu categories={categories} />
         <div className="flex w-auto items-center justify-center gap-2.5 md:w-1/3">
+          <MobileMenu categories={categories} />
           <Logo>Tulos</Logo>
         </div>
-        <div className="flex w-auto items-center justify-center gap-5 md:w-1/3">
+        <div className="flex w-auto items-center justify-end gap-5 md:w-1/3">
           <SearchBar />
           <CartIcon />
+          <SignedIn>
+            <Link href={"/orders"} className="group relative">
+              <ListOrdered className="group-hover:text-darkColor hoverEffect" />
+              <span className="bg-darkColor absolute -top-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full text-xs font-semibold text-white">
+                {orders?.length ? orders?.length : 0}
+              </span>
+            </Link>
+          </SignedIn>
           <ClerkLoaded>
             <SignedIn>
-              <Link href={"/orders"} className="group relative">
-                <ListOrdered className="group-hover:text-darkColor hoverEffect size-5" />
-                <span className="bg-darkColor absolute -top-2 -right-2 flex size-3.5 items-center justify-center rounded-full text-xs font-semibold text-white">
-                  0
-                </span>
-              </Link>
               <UserButton />
             </SignedIn>
             {!user && (
-              <SignInButton mode="modal">
-                <button className="hover:text-darkColor hoverEffect text-sm font-semibold">
-                  Login
-                </button>
-              </SignInButton>
+              <Link
+                href="/signin"
+                className="hover:text-darkColor hoverEffect text-sm font-semibold"
+              >
+                Login
+              </Link>
             )}
           </ClerkLoaded>
         </div>
       </Container>
     </header>
   );
-}
+};
+
+export default Header;

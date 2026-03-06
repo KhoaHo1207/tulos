@@ -5,15 +5,16 @@ import { motion } from "motion/react";
 import Logo from "./Logo";
 import Link from "next/link";
 import { useOutsideClick } from "@/hooks/use-outside-click";
-import { headerData } from "@/constants";
 import SocialMedia from "./SocialMedia";
+import { CATEGORIES_QUERYResult } from "@/sanity.types";
 
 interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
+  categories: CATEGORIES_QUERYResult;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, categories }) => {
   const pathname = usePathname();
   const sidebarRef = useOutsideClick<HTMLDivElement>(onClose);
 
@@ -31,9 +32,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         className="bg-darkColor text-primary-foreground border-r-hoverColor/30 flex h-full max-w-96 min-w-72 flex-col gap-6 border-r p-10"
       >
         <div className="flex items-center justify-between">
-          <button onClick={onClose}>
-            <Logo className="text-white">Tulos</Logo>
-          </button>
+          <Logo className="text-white">Tulos</Logo>
           <button
             onClick={onClose}
             className="hoverEffect cursor-pointer hover:text-red-500"
@@ -41,25 +40,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             <X />
           </button>
         </div>
-        <div className="flex w-full flex-col items-start gap-5 font-semibold capitalize">
-          {headerData.map((item) => (
-            <Link
-              href={item.href}
-              key={item.href}
-              className={`hoverEffect group relative text-white/70 hover:text-white ${pathname === item?.href && "text-white"}`}
-              onClick={onClose}
-            >
-              {item.title}
-              <span
-                className={`hoverEffect absolute -bottom-0.5 left-1/2 h-0.5 w-0 bg-white group-hover:left-0 group-hover:w-1/2 ${pathname === item?.href && "left-0 w-1/2"}`}
-              />
-              <span
-                className={`hoverEffect absolute right-1/2 -bottom-0.5 h-0.5 w-0 bg-white group-hover:right-0 group-hover:w-1/2 ${pathname === item?.href && "right-0 w-1/2"}`}
-              />
-            </Link>
-          ))}
-        </div>
-        {/* <div className="flex flex-col gap-3.5 text-base font-semibold tracking-wide text-zinc-400">
+        <div className="flex flex-col gap-3.5 text-base font-semibold tracking-wide text-zinc-400">
           <Link
             onClick={onClose}
             href={"/"}
@@ -81,7 +62,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
               {item?.title}
             </Link>
           ))}
-        </div> */}
+        </div>
         <SocialMedia />
       </motion.div>
     </div>

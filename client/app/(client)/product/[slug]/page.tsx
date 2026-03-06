@@ -37,9 +37,13 @@ const ProductPage = async ({
               className="text-lg font-bold"
             />
           </div>
-          {product?.stock && (
+          {product?.stock && product?.stock > 0 ? (
             <p className="w-24 rounded-lg bg-green-100 py-2.5 text-center text-sm font-semibold text-green-600">
               In Stock
+            </p>
+          ) : (
+            <p className="w-24 rounded-lg bg-red-100 py-2.5 text-center text-sm font-semibold text-red-600">
+              Out of Stock
             </p>
           )}
 
