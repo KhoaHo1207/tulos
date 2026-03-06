@@ -41,10 +41,11 @@ const productSchema = new mongoose.Schema(
       enum: ["new", "hot", "sale"],
       default: "new",
     },
-    variant: {
-      type: String,
-      enum: ["tshirt", "jacket", "pants", "hoodie", "short", "others"],
-      default: "tshirt",
+    types: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Type",
+      required: true,
+      default: [],
     },
     isActive: {
       type: Boolean,
