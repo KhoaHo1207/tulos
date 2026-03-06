@@ -4,6 +4,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Raleway } from "next/font/google";
 import "@/app/globals.css";
+import { Toaster } from "sonner";
 
 const raleway = Raleway({
   variable: "--font-raleway",
@@ -32,6 +33,7 @@ export default function RootLayout({
           <Header />
           {children}
           <Footer />
+          <Toaster position="top-right" />
         </body>
       </html>
     </ClerkProvider>
