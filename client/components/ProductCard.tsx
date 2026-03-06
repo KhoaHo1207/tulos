@@ -24,6 +24,13 @@ const ProductCard = ({ product }: { product: Product }) => {
             />
           </Link>
         )}
+        {product?.stock === 0 && (
+          <div className="bg-darkColor/50 absolute top-0 left-0 flex h-full w-full items-center justify-center">
+            <p className="text-center text-base font-semibold text-white">
+              Out of Stock
+            </p>
+          </div>
+        )}
       </div>
       <div className="flex flex-col gap-1.5 rounded-md rounded-tl-none rounded-tr-none border border-t-0 bg-zinc-50 px-2 py-3">
         <Title className="line-clamp-1 text-base">{product?.name}</Title>
@@ -33,7 +40,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           discount={product?.discount}
           className="text-lg"
         />
-        <AddToCartButton />
+        <AddToCartButton product={product} />
       </div>
     </div>
   );

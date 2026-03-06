@@ -1,6 +1,6 @@
 import AddToCartButton from "@/components/AddToCartButton";
 import Container from "@/components/Container";
-import ImageView from "@/components/new/ImageView";
+import ImageView from "@/components/ImageView";
 import PriceView from "@/components/PriceView";
 import ProductCharacteristics from "@/components/ProductCharacteristics";
 import { getProductBySlug } from "@/sanity/helpers";
